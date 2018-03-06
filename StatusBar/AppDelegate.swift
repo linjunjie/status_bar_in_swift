@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func requestUrl() -> String{
-        var url = "http://localhost/api.php?p=future"
+        var url = "http://localhost/api.php"
         var content = NSString(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding, error: nil)
         
         return content!
