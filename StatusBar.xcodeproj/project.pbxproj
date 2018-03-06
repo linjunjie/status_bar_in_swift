@@ -150,6 +150,8 @@
 		A1C8D6461C031056002AF75E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = andy;
 				TargetAttributes = {
@@ -393,6 +395,7 @@
 				A1C8D66A1C031056002AF75E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A1C8D66B1C031056002AF75E /* Build configuration list for PBXNativeTarget "StatusBarTests" */ = {
 			isa = XCConfigurationList;
@@ -401,6 +404,7 @@
 				A1C8D66D1C031056002AF75E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

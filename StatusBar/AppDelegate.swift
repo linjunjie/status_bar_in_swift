@@ -15,15 +15,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
     
-    
     // 加载完成时
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
         
         statusItem.title = "Future"
         statusItem.menu = StatusMenu
         
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "getReq", userInfo: nil, repeats: true)
     
     }
 
@@ -37,37 +35,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     
-    // self defined
+    
     func update(){
-        var date = NSDate();
-        var timeFormatter = NSDateFormatter();
+        let urlStr:NSString = String(format:"http://localhost/api.php")
+        let url:NSURL = NSURL(string: urlStr as String)!
         
-        timeFormatter.dateFormat = "yyy-MM-dd 'at' HH:mm:ss.SSS"
-        var strNowTime = timeFormatter.stringFromDate(date) as String
+        let request:NSURLRequest = NSURLRequest(URL: url)
         
-        //statusItem.title = getDatetime()
-        var data = requestUrl()
-        if !data.isEmpty {
-            statusItem.title = data     // 更新数据
+        NSURLConnection.sendAsynchronousRequest(request, queue:NSOperationQueue()) { (res, data, error) in
+            
+            //服务器返回：请求方式 = GET
+            let str = NSString(data: data!, encoding:NSUTF8StringEncoding)
+            
+            let content = str as? String
+            self.statusItem.title = content
         }
-    }
-    
-    // 得到当前时间
-    func getDatetime() -> String {
-        var date = NSDate();
-        var timeFormatter = NSDateFormatter();
-        
-        timeFormatter.dateFormat = "yyy-MM-dd 'at' HH:mm:ss.SSS"
-        var strNowTime = timeFormatter.stringFromDate(date) as String
-        
-        return strNowTime
-    }
-    
-    func requestUrl() -> String{
-        var url = "http://localhost/api.php?p=future"
-        var content = NSString(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding, error: nil)
-        
-        return content!
     }
     
 }
