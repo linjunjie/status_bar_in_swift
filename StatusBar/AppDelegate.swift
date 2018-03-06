@@ -21,7 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.title = "Future"
         statusItem.menu = StatusMenu
         
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "getReq", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: true)
     
     }
 
