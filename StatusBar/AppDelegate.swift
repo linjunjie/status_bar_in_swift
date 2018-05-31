@@ -7,46 +7,45 @@
 //
 
 import Cocoa
+import Alamofire
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {    
     
     @IBOutlet weak var StatusMenu: NSMenu!
     
-    let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(-1)
-    
+    let statusItem = NSStatusBar.system().statusItem(withLength: -1)
     
     // 加载完成时
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
         statusItem.title = "Future"
         statusItem.menu = StatusMenu
         
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "update", userInfo: nil, repeats: true)
+        var _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(AppDelegate.update), userInfo: nil, repeats: true)
     
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
     
-    @IBAction func quitClicked(sender: NSMenuItem) {
-        NSApplication.sharedApplication().terminate(self)
+    @IBAction func quitClicked(_ sender: NSMenuItem) {
+        NSApplication.shared().terminate(self)
     }
-    
     
     // self defined
     func update(){
-        var date = NSDate();
-        var timeFormatter = NSDateFormatter();
+        let date = Date();
+        let timeFormatter = DateFormatter();
         
         timeFormatter.dateFormat = "yyy-MM-dd 'at' HH:mm:ss.SSS"
-        var strNowTime = timeFormatter.stringFromDate(date) as String
+        var _ = timeFormatter.string(from: date) as String
         
         //statusItem.title = getDatetime()
-        var data = requestUrl()
+        let data = reqUrl()
         if !data.isEmpty {
             statusItem.title = data     // 更新数据
         }
@@ -54,21 +53,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // 得到当前时间
     func getDatetime() -> String {
-        var date = NSDate();
-        var timeFormatter = NSDateFormatter();
+        let date = Date();
+        let timeFormatter = DateFormatter();
         
         timeFormatter.dateFormat = "yyy-MM-dd 'at' HH:mm:ss.SSS"
-        var strNowTime = timeFormatter.stringFromDate(date) as String
+        let strNowTime = timeFormatter.string(from: date) as String
         
         return strNowTime
     }
     
-    func requestUrl() -> String{
-        var url = "http://localhost/api.php"
-        var content = NSString(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding, error: nil)
-        
-        return content!
-    }
+//    func requestUrl() -> String{
+//        var url = "http://localhost/api.php"
+//        var content = NSString(contentsOfURL: NSURL(string: url)!, encoding: NSUTF8StringEncoding, error: nil)
+//        
+//        return content!
+//    }
     
+    func reqUrl() -> String {
+        let url = "http://localhost/api.php"
+        let status = statusItem
+        Alamofire.request(url, method: .get).responseString { (response) in
+            let result = "\(response.result.value!)";
+            status.title = result
+        }
+        return "";
+    }
 }
 
